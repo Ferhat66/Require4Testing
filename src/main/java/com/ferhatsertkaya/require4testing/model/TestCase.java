@@ -1,5 +1,6 @@
 package com.ferhatsertkaya.require4testing.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +17,7 @@ public class TestCase {
 
     @ManyToOne
     @JoinColumn(name = "requirement_id")
+    @JsonBackReference 
     private Requirement requirement;
 
     // Getter und Setter

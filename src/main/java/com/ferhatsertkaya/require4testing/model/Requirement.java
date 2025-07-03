@@ -1,5 +1,6 @@
 package com.ferhatsertkaya.require4testing.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class Requirement {
     private String description;
 
     @OneToMany(mappedBy = "requirement", cascade = CascadeType.ALL)
+    @JsonManagedReference  
     private List<TestCase> testCases;
 
     // Getter und Setter

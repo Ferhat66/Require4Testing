@@ -2,6 +2,8 @@ package com.ferhatsertkaya.require4testing.controller;
 
 import com.ferhatsertkaya.require4testing.model.Requirement;
 import com.ferhatsertkaya.require4testing.service.RequirementService;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +36,9 @@ public class RequirementController {
 
     // POST /requirements 
     @PostMapping
-    public Requirement createRequirement(@RequestBody Requirement requirement) {
-        return requirementService.saveRequirement(requirement);
+    public ResponseEntity<Requirement> createRequirement(@RequestBody Requirement requirement) {
+        Requirement saved = requirementService.saveRequirement(requirement);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     // PUT /requirements/{id} 

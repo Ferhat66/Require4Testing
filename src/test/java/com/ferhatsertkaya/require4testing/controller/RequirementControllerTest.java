@@ -90,7 +90,9 @@ public class RequirementControllerTest {
 
     @Test
     public void testDeleteRequirement() throws Exception {
+        when(requirementService.getRequirementById(1L)).thenReturn(Optional.of(exampleRequirement)); // Wichtig!
+
         mockMvc.perform(delete("/requirements/1"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent()); // Erwartet 204 No Content
     }
 }

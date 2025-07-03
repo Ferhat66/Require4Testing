@@ -12,6 +12,12 @@ public class TestRun {
 
     private LocalDateTime runDate;
 
+    private String status;  // z.B. "PASSED", "FAILED", "BLOCKED"
+
+    @ManyToOne
+    @JoinColumn(name = "test_case_id")
+    private TestCase testCase;
+
     @ManyToOne
     @JoinColumn(name = "tester_id")
     private Tester tester;
@@ -22,6 +28,12 @@ public class TestRun {
 
     public LocalDateTime getRunDate() { return runDate; }
     public void setRunDate(LocalDateTime runDate) { this.runDate = runDate; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public TestCase getTestCase() { return testCase; }
+    public void setTestCase(TestCase testCase) { this.testCase = testCase; }
 
     public Tester getTester() { return tester; }
     public void setTester(Tester tester) { this.tester = tester; }
