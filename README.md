@@ -15,7 +15,7 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 - Persistenz der Daten mit Spring Data JPA und einer H2-Datenbank  
 - Automatisierte Unit- und Integrationstests für Controller  
 
-## Aktueller Stand (Stand: 02.07.2025)
+## (Stand: 02.07.2025)
 
 - Grundgerüst mit Spring Boot aufgesetzt  
 - Entitäten (Requirement, TestCase, TestRun, Tester, User) modelliert  
@@ -25,12 +25,20 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 - Projekt erfolgreich gebaut und getestet  
 - Projekt ins GitHub-Repository gepusht
 
+## Aktueller Stand (Stand: 03.07.2025)
+
+- REST-Controller für Testfälle (TestCaseController) mit        CRUD-Endpunkten implementiert  
+- JUnit-Tests für TestCaseController erstellt  
+- Anwendung erfolgreich gestartet und REST-Endpunkte für Requirements und Testcases getestet  
+- H2 In-Memory-Datenbank korrekt konfiguriert und im Einsatz  
+- GitHub Repository aktualisiert und Änderungen gepusht
+
 ## Nächste Schritte
 
-- REST-Controller für weitere Entitäten (TestCase, TestRun, Tester, User) erstellen  
+- REST-Controller für TestRun, Tester und User erstellen  
 - Frontend (z.B. Thymeleaf Templates oder React) implementieren  
-- Weitere Tests schreiben und automatisieren  
+- Weitere Tests schreiben und automatisieren, insbesondere für neue Controller  
 - Dokumentation erweitern (Architektur, UML-Diagramme, Screenshots)  
-- Erweiterte Features wie Zuordnung von Testfällen zu Testläufen und Pflege von Testergebnissen implementieren
+- Erweiterte Features implementieren, z.B. Zuordnung von Testfällen zu Testläufen und Pflege von Testergebnissen
 
 ---
