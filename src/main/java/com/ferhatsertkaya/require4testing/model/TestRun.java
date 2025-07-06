@@ -1,5 +1,6 @@
 package com.ferhatsertkaya.require4testing.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -12,15 +13,19 @@ public class TestRun {
 
     private LocalDateTime runDate;
 
-    private String status;  // z.B. "PASSED", "FAILED", "BLOCKED"
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "test_case_id")
+    @JsonBackReference // Verhindert Endlosschleife bei JSON-Serialisierung
     private TestCase testCase;
 
     @ManyToOne
     @JoinColumn(name = "tester_id")
+    @JsonBackReference
     private Tester tester;
+
+    public TestRun() {}
 
     // Getter und Setter
     public Long getId() { return id; }
