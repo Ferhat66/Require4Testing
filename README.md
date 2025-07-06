@@ -25,7 +25,7 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 - Projekt erfolgreich gebaut und getestet  
 - Projekt ins GitHub-Repository gepusht
 
-## Aktueller Stand (Stand: 03.07.2025)
+## (Stand: 03.07.2025)
 
 - REST-Controller für Testfälle (TestCaseController) mit        CRUD-Endpunkten implementiert  
 - JUnit-Tests für TestCaseController erstellt  
@@ -33,9 +33,16 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 - H2 In-Memory-Datenbank korrekt konfiguriert und im Einsatz  
 - GitHub Repository aktualisiert und Änderungen gepusht
 
+## Aktueller Stand (04.–06.07.2025)
+	- REST-Controller, Service und Repository für TestRun, Tester und User implementiert
+	- Entsprechende Unit-Tests für RequirementController, TesterController und UserController hinzugefügt
+	- Datenmodell für Tester und User vervollständigt
+	- CRUD-Operationen für TestRun, Tester und User erfolgreich getestet
+	- Projektstruktur erweitert und konsolidiert
+	- README mit aktuellem Projektfortschritt ergänzt
+
 ## Nächste Schritte
 
-- REST-Controller für TestRun, Tester und User erstellen  
 - Frontend (z.B. Thymeleaf Templates oder React) implementieren  
 - Weitere Tests schreiben und automatisieren, insbesondere für neue Controller  
 - Dokumentation erweitern (Architektur, UML-Diagramme, Screenshots)  
