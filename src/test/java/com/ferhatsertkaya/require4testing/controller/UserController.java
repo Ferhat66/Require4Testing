@@ -2,6 +2,7 @@ package com.ferhatsertkaya.require4testing.controller;
 
 import com.ferhatsertkaya.require4testing.model.User;
 import com.ferhatsertkaya.require4testing.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +33,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User saved = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
         Optional<User> existing = userService.getUserById(id);
         if (existing.isEmpty()) {
             return ResponseEntity.notFound().build();

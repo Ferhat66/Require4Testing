@@ -2,6 +2,9 @@ package com.ferhatsertkaya.require4testing.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,8 +14,11 @@ public class TestRun {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Ausführungsdatum darf nicht null sein")
     private LocalDateTime runDate;
 
+    @NotBlank(message = "Status darf nicht leer sein")
+    @Size(max = 100, message = "Status darf max. 100 Zeichen lang sein")
     private String status;
 
     @ManyToOne

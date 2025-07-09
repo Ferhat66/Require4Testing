@@ -33,13 +33,22 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 - H2 In-Memory-Datenbank korrekt konfiguriert und im Einsatz  
 - GitHub Repository aktualisiert und Änderungen gepusht
 
-## Aktueller Stand (04.–06.07.2025)
+## (Stand 04. – 06.07.2025)
 	- REST-Controller, Service und Repository für TestRun, Tester und User implementiert
 	- Entsprechende Unit-Tests für RequirementController, TesterController und UserController hinzugefügt
 	- Datenmodell für Tester und User vervollständigt
 	- CRUD-Operationen für TestRun, Tester und User erfolgreich getestet
 	- Projektstruktur erweitert und konsolidiert
 	- README mit aktuellem Projektfortschritt ergänzt
+
+## Aktueller Stand (07. - 09.07.2025)
+	- JSR-303 Bean Validation in den Datenmodellen ergänzt (Pflichtfelder, Formatvalidierung)
+	- REST-Controller mit @Valid Annotation zur Aktivierung der Validierung versehen
+	- Globale Fehlerbehandlung via @ControllerAdvice implementiert, um Validierungsfehler als JSON zu senden
+	- Einheitliche und saubere Rückgabe von Validierungsfehlern an Clients sichergestellt
+	- Tests überprüft und Validierungsfälle getestet
+	- Backend nun robust gegenüber fehlerhaften Eingaben
+
 
 ## Nächste Schritte
 

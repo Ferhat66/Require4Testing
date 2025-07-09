@@ -1,6 +1,8 @@
 package com.ferhatsertkaya.require4testing.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -10,10 +12,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Username darf nicht leer sein")
+    @Size(min = 3, max = 50, message = "Username muss zwischen 3 und 50 Zeichen lang sein")
     private String username;
 
+    @NotBlank(message = "Passwort darf nicht leer sein")
+    @Size(min = 6, message = "Passwort muss mindestens 6 Zeichen lang sein")
     private String password;
 
+    @NotBlank(message = "Rolle darf nicht leer sein")
     private String role;
 
     // Getter und Setter
