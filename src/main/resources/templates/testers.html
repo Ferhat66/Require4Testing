@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tester Übersicht</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<h1>Tester Übersicht</h1>
+
+<div th:if="${successMessage}" style="color:green;">
+    <p th:text="${successMessage}"></p>
+</div>
+<div th:if="${errorMessage}" style="color:red;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<a href="/testers/new">Neuen Tester anlegen</a>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Aktionen</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="tester : ${testers}">
+        <td th:text="${tester.id}">1</td>
+        <td th:text="${tester.name}">Max Mustermann</td>
+        <td th:text="${tester.email}">max@example.com</td>
+        <td>
+            <a th:href="@{'/testers/edit/' + ${tester.id}}">Bearbeiten</a> |
+            <a th:href="@{'/testers/delete/' + ${tester.id}}"
+               onclick="return confirm('Tester wirklich löschen?');">Löschen</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/">Zurück zur Startseite</a>
+
+</body>
+</html>

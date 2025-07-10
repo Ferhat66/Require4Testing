@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Benutzer Formular</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+
+<h1 th:text="${user.id} == null ? 'Neuen Benutzer anlegen' : 'Benutzer bearbeiten'">Formular</h1>
+
+<form th:action="@{/users/save}" th:object="${user}" method="post">
+
+    <div>
+        <label for="username">Benutzername:</label>
+        <input type="text" id="username" th:field="*{username}" />
+        <div th:if="${#fields.hasErrors('username')}" style="color:red;">
+            <p th:errors="*{username}">Bitte geben Sie einen Benutzernamen ein</p>
+        </div>
+    </div>
+
+    <div>
+        <label for="password">Passwort:</label>
+        <input type="password" id="password" th:field="*{password}" />
+        <div th:if="${#fields.hasErrors('password')}" style="color:red;">
+            <p th:errors="*{password}">Bitte geben Sie ein Passwort ein</p>
+        </div>
+    </div>
+
+    <div>
+        <label for="role">Rolle:</label>
+        <input type="text" id="role" th:field="*{role}" />
+        <div th:if="${#fields.hasErrors('role')}" style="color:red;">
+            <p th:errors="*{role}">Bitte geben Sie eine Rolle an</p>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit">Speichern</button>
+        <a href="/users">Abbrechen</a>
+    </div>
+
+</form>
+
+</body>
+</html>

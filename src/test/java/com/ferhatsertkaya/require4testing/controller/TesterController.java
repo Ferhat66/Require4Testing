@@ -3,15 +3,17 @@ package com.ferhatsertkaya.require4testing.controller;
 import com.ferhatsertkaya.require4testing.model.Tester;
 import com.ferhatsertkaya.require4testing.service.TesterService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/testers")
+@Controller
+@RequestMapping({"/testers", "/testers/"})
 public class TesterController {
 
     private final TesterService testerService;
@@ -20,42 +22,69 @@ public class TesterController {
         this.testerService = testerService;
     }
 
-    @GetMapping
+    // REST-API: GET alle Tester als JSON
+    @GetMapping(produces = "application/json")
+    @ResponseBody
     public List<Tester> getAllTesters() {
         return testerService.getAllTesters();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Tester> getTesterById(@PathVariable Long id) {
+    // REST-API: GET Tester nach ID als JSON
+    @GetMapping(value = "/{id}", produces = "application/json")
+    @ResponseBody
+    public Optional<Tester> getTesterById(@PathVariable Long id) {
+        return testerService.getTesterById(id);
+    }
+
+    // Thymeleaf: Liste aller Tester anzeigen
+    @GetMapping
+    public String showTesterList(Model model) {
+        model.addAttribute("testers", testerService.getAllTesters());
+        return "testers";  // src/main/resources/templates/testers.html
+    }
+
+    // Thymeleaf: Formular für neuen Tester
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("tester", new Tester());
+        return "tester_form"; // src/main/resources/templates/tester_form.html
+    }
+
+    // Thymeleaf: Formular für Tester bearbeiten
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<Tester> tester = testerService.getTesterById(id);
-        return tester.map(ResponseEntity::ok)
-                     .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<Tester> createTester(@Valid @RequestBody Tester tester) {
-        Tester saved = testerService.saveTester(tester);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Tester> updateTester(@PathVariable Long id, @Valid @RequestBody Tester updatedTester) {
-        Optional<Tester> existing = testerService.getTesterById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (tester.isPresent()) {
+            model.addAttribute("tester", tester.get());
+            return "tester_form";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Tester nicht gefunden");
+            return "redirect:/testers";
         }
-        updatedTester.setId(id);
-        Tester saved = testerService.saveTester(updatedTester);
-        return ResponseEntity.ok(saved);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTester(@PathVariable Long id) {
-        Optional<Tester> existing = testerService.getTesterById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    // Thymeleaf: Tester speichern (neu und update)
+    @PostMapping("/save")
+    public String saveTester(@Valid @ModelAttribute("tester") Tester tester, BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "tester_form";
         }
-        testerService.deleteTester(id);
-        return ResponseEntity.noContent().build();
+        testerService.saveTester(tester);
+        redirectAttributes.addFlashAttribute("successMessage", "Tester erfolgreich gespeichert");
+        return "redirect:/testers";
+    }
+
+    // Thymeleaf: Tester löschen
+    @GetMapping("/delete/{id}")
+    public String deleteTester(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<Tester> tester = testerService.getTesterById(id);
+        if (tester.isPresent()) {
+            testerService.deleteTester(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Tester erfolgreich gelöscht");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Tester nicht gefunden");
+        }
+        return "redirect:/testers";
     }
 }

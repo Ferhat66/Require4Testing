@@ -3,15 +3,16 @@ package com.ferhatsertkaya.require4testing.controller;
 import com.ferhatsertkaya.require4testing.model.Requirement;
 import com.ferhatsertkaya.require4testing.service.RequirementService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/requirements")
+@Controller
+@RequestMapping({"/requirements", "/requirements/"})
 public class RequirementController {
 
     private final RequirementService requirementService;
@@ -21,42 +22,51 @@ public class RequirementController {
     }
 
     @GetMapping
-    public List<Requirement> getAllRequirements() {
-        return requirementService.getAllRequirements();
+    public String getAllRequirements(Model model) {
+        List<Requirement> requirements = requirementService.getAllRequirements();
+        model.addAttribute("requirements", requirements);
+        return "requirements"; // referenziert requirements.html
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Requirement> getRequirementById(@PathVariable Long id) {
+    public String getRequirementById(@PathVariable Long id, Model model) {
         Optional<Requirement> requirement = requirementService.getRequirementById(id);
-        return requirement.map(ResponseEntity::ok)
-                          .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<Requirement> createRequirement(@Valid @RequestBody Requirement requirement) {
-        Requirement saved = requirementService.saveRequirement(requirement);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Requirement> updateRequirement(@PathVariable Long id,
-                                                         @Valid @RequestBody Requirement updatedRequirement) {
-        Optional<Requirement> existing = requirementService.getRequirementById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (requirement.isPresent()) {
+            model.addAttribute("requirement", requirement.get());
+            return "requirement_detail"; // Optional: Detailseite, falls gewünscht
         }
-        updatedRequirement.setId(id);
-        Requirement saved = requirementService.saveRequirement(updatedRequirement);
-        return ResponseEntity.ok(saved);
+        return "redirect:/requirements";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRequirement(@PathVariable Long id) {
-        Optional<Requirement> existing = requirementService.getRequirementById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("requirement", new Requirement());
+        return "requirement_form";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Optional<Requirement> requirement = requirementService.getRequirementById(id);
+        if (requirement.isPresent()) {
+            model.addAttribute("requirement", requirement.get());
+            return "requirement_form";
         }
+        return "redirect:/requirements";
+    }
+
+    @PostMapping("/save")
+    public String saveRequirement(@Valid @ModelAttribute("requirement") Requirement requirement,
+                                  BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "requirement_form";
+        }
+        requirementService.saveRequirement(requirement);
+        return "redirect:/requirements";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteRequirement(@PathVariable Long id) {
         requirementService.deleteRequirement(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/requirements";
     }
 }

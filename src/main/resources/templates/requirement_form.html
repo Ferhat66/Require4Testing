@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="${requirement.id == null} ? 'Neue Anforderung' : 'Anforderung bearbeiten'">Formular</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <h1 th:text="${requirement.id == null} ? 'Neue Anforderung anlegen' : 'Anforderung bearbeiten'">Formular</h1>
+
+    <form th:action="@{/requirements/save}" th:object="${requirement}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div>
+            <label for="title">Titel:</label>
+            <input type="text" id="title" th:field="*{title}" />
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red"></div>
+        </div>
+
+        <div>
+            <label for="description">Beschreibung:</label>
+            <textarea id="description" th:field="*{description}"></textarea>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red"></div>
+        </div>
+
+        <div>
+            <button type="submit">Speichern</button>
+            <a th:href="@{/requirements}">Abbrechen</a>
+        </div>
+    </form>
+</body>
+</html>

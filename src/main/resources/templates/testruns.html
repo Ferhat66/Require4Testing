@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Testläufe Übersicht</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<h1>Testläufe Übersicht</h1>
+
+<div th:if="${successMessage}" style="color:green;">
+    <p th:text="${successMessage}"></p>
+</div>
+<div th:if="${errorMessage}" style="color:red;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<a href="/testruns/new">Neuen Testlauf anlegen</a>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Datum</th>
+        <th>Status</th>
+        <th>Testfall ID</th>
+        <th>Tester ID</th>
+        <th>Aktionen</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="testrun : ${testruns}">
+        <td th:text="${testrun.id}">1</td>
+        <td th:text="${#temporals.format(testrun.runDate, 'yyyy-MM-dd HH:mm')}">2025-07-01 10:00</td>
+        <td th:text="${testrun.status}">PASSED</td>
+        <td th:text="${testrun.testCase != null ? testrun.testCase.id : '-'}">1</td>
+        <td th:text="${testrun.tester != null ? testrun.tester.id : '-'}">1</td>
+        <td>
+            <a th:href="@{'/testruns/edit/' + ${testrun.id}}">Bearbeiten</a> |
+            <a th:href="@{'/testruns/delete/' + ${testrun.id}}"
+               onclick="return confirm('Testlauf wirklich löschen?');">Löschen</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/">Zurück zur Startseite</a>
+
+</body>
+</html>

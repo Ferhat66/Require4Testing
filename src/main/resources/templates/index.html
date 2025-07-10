@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Require4Testing - Startseite</title>
+    <meta charset="UTF-8" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        main {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        h1 {
+            margin-bottom: 2rem;
+        }
+        ul.nav-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        ul.nav-list li {
+            flex: 1 1 40%;
+            max-width: 250px;
+        }
+        ul.nav-list a {
+            display: block;
+            background-color: #007acc;
+            color: white;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }
+        ul.nav-list a:hover {
+            background-color: #005fa3;
+        }
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            padding-bottom: 2rem;
+        }
+        @media (max-width: 500px) {
+            ul.nav-list {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            ul.nav-list li {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Require4Testing</h1>
+</header>
+<main>
+    <ul class="nav-list">
+        <li><a th:href="@{/requirements}">Anforderungen</a></li>
+        <li><a th:href="@{/testers}">Tester</a></li>
+        <li><a th:href="@{/testruns}">Testläufe</a></li>
+        <li><a th:href="@{/users}">Benutzer</a></li>
+    </ul>
+</main>
+<footer>
+    <p>&copy; 2025 Require4Testing</p>
+</footer>
+</body>
+</html>

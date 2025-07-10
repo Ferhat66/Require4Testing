@@ -3,14 +3,16 @@ package com.ferhatsertkaya.require4testing.controller;
 import com.ferhatsertkaya.require4testing.model.User;
 import com.ferhatsertkaya.require4testing.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/users")
 public class UserController {
 
@@ -20,42 +22,69 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    // REST-API: Alle User als JSON
+    @GetMapping(produces = "application/json")
+    @ResponseBody
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    // REST-API: User nach ID als JSON
+    @GetMapping(value = "/{id}", produces = "application/json")
+    @ResponseBody
+    public Optional<User> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    // Thymeleaf: Liste aller User anzeigen
+    @GetMapping
+    public String showUserList(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "users"; // src/main/resources/templates/users.html
+    }
+
+    // Thymeleaf: Formular für neuen User
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("user", new User());
+        return "user_form"; // src/main/resources/templates/user_form.html
+    }
+
+    // Thymeleaf: Formular zum Bearbeiten eines Users
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<User> user = userService.getUserById(id);
-        return user.map(ResponseEntity::ok)
-                   .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User saved = userService.saveUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
-        Optional<User> existing = userService.getUserById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
+            return "user_form";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Benutzer nicht gefunden");
+            return "redirect:/users";
         }
-        updatedUser.setId(id);
-        User saved = userService.saveUser(updatedUser);
-        return ResponseEntity.ok(saved);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        Optional<User> existing = userService.getUserById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    // Thymeleaf: Speichern (neu und update)
+    @PostMapping("/save")
+    public String saveUser(@Valid @ModelAttribute("user") User user,
+                           BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "user_form";
         }
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        userService.saveUser(user);
+        redirectAttributes.addFlashAttribute("successMessage", "Benutzer erfolgreich gespeichert");
+        return "redirect:/users";
+    }
+
+    // Thymeleaf: Benutzer löschen
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<User> user = userService.getUserById(id);
+        if (user.isPresent()) {
+            userService.deleteUser(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Benutzer erfolgreich gelöscht");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Benutzer nicht gefunden");
+        }
+        return "redirect:/users";
     }
 }

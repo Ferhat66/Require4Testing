@@ -3,14 +3,16 @@ package com.ferhatsertkaya.require4testing.controller;
 import com.ferhatsertkaya.require4testing.model.TestRun;
 import com.ferhatsertkaya.require4testing.service.TestRunService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/testruns")
 public class TestRunController {
 
@@ -20,43 +22,69 @@ public class TestRunController {
         this.testRunService = testRunService;
     }
 
-    @GetMapping
+    // REST-API: Alle TestRuns als JSON
+    @GetMapping(produces = "application/json")
+    @ResponseBody
     public List<TestRun> getAllTestRuns() {
         return testRunService.getAllTestRuns();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TestRun> getTestRunById(@PathVariable Long id) {
+    // REST-API: TestRun nach ID als JSON
+    @GetMapping(value = "/{id}", produces = "application/json")
+    @ResponseBody
+    public Optional<TestRun> getTestRunById(@PathVariable Long id) {
+        return testRunService.getTestRunById(id);
+    }
+
+    // Thymeleaf: Liste aller TestRuns
+    @GetMapping
+    public String showTestRunList(Model model) {
+        model.addAttribute("testruns", testRunService.getAllTestRuns());
+        return "testruns"; // src/main/resources/templates/testruns.html
+    }
+
+    // Thymeleaf: Formular für neuen TestRun
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("testrun", new TestRun());
+        return "testrun_form"; // src/main/resources/templates/testrun_form.html
+    }
+
+    // Thymeleaf: Formular zum Bearbeiten
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<TestRun> testRun = testRunService.getTestRunById(id);
-        return testRun.map(ResponseEntity::ok)
-                      .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<TestRun> createTestRun(@Valid @RequestBody TestRun testRun) {
-        TestRun saved = testRunService.saveTestRun(testRun);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<TestRun> updateTestRun(@PathVariable Long id,
-                                                 @Valid @RequestBody TestRun updatedTestRun) {
-        Optional<TestRun> existing = testRunService.getTestRunById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (testRun.isPresent()) {
+            model.addAttribute("testrun", testRun.get());
+            return "testrun_form";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Testlauf nicht gefunden");
+            return "redirect:/testruns";
         }
-        updatedTestRun.setId(id);
-        TestRun saved = testRunService.saveTestRun(updatedTestRun);
-        return ResponseEntity.ok(saved);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTestRun(@PathVariable Long id) {
-        Optional<TestRun> existing = testRunService.getTestRunById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    // Thymeleaf: Speichern (neu und update)
+    @PostMapping("/save")
+    public String saveTestRun(@Valid @ModelAttribute("testrun") TestRun testRun,
+                              BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "testrun_form";
         }
-        testRunService.deleteTestRun(id);
-        return ResponseEntity.noContent().build();
+        testRunService.saveTestRun(testRun);
+        redirectAttributes.addFlashAttribute("successMessage", "Testlauf erfolgreich gespeichert");
+        return "redirect:/testruns";
+    }
+
+    // Thymeleaf: Löschen
+    @GetMapping("/delete/{id}")
+    public String deleteTestRun(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<TestRun> testRun = testRunService.getTestRunById(id);
+        if (testRun.isPresent()) {
+            testRunService.deleteTestRun(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Testlauf erfolgreich gelöscht");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Testlauf nicht gefunden");
+        }
+        return "redirect:/testruns";
     }
 }

@@ -50,9 +50,15 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 	- Backend nun robust gegenüber fehlerhaften Eingaben
 
 
-## Nächste Schritte
+## Aktueller Stand (10.07.2025)
+	- Frontend mit Thymeleaf für Requirement, Tester, TestRun und User vollständig implementiert
+	- Controller für die Frontend-Seiten (Thymeleaf) für alle Kern-Entitäten erstellt
+	- Indexseite und IndexController für Navigation implementiert
+	- Erste REST-API-Controller bereits angelegt (separat, nicht final integriert)
+	- Problem mit Pfad-Weiterleitungen (/testers vs. /testers/) erkannt und dokumentiert
+	- Anwendung läuft stabil, aber Pfadproblematik beim Zugriff auf URLs ohne Slash bleibt offen
 
-- Frontend (z.B. Thymeleaf Templates oder React) implementieren  
+## Nächste Schritte 
 - Weitere Tests schreiben und automatisieren, insbesondere für neue Controller  
 - Dokumentation erweitern (Architektur, UML-Diagramme, Screenshots)  
 - Erweiterte Features implementieren, z.B. Zuordnung von Testfällen zu Testläufen und Pflege von Testergebnissen
