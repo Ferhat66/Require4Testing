@@ -8,10 +8,5 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // Leitet /testers auf /testers/ weiter
-        registry.addRedirectViewController("/testers", "/testers/");
-        registry.addRedirectViewController("/users", "/users/");
-        registry.addRedirectViewController("/requirements", "/requirements/");
-        registry.addRedirectViewController("/testruns", "/testruns/");
     }
 }

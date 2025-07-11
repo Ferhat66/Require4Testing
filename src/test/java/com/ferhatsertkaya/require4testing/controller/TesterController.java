@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping({"/testers", "/testers/"})
+@RequestMapping({"/testers", "/testers/"})  // Slash-Varianten abfangen
 public class TesterController {
 
     private final TesterService testerService;
@@ -22,35 +22,19 @@ public class TesterController {
         this.testerService = testerService;
     }
 
-    // REST-API: GET alle Tester als JSON
-    @GetMapping(produces = "application/json")
-    @ResponseBody
-    public List<Tester> getAllTesters() {
-        return testerService.getAllTesters();
-    }
-
-    // REST-API: GET Tester nach ID als JSON
-    @GetMapping(value = "/{id}", produces = "application/json")
-    @ResponseBody
-    public Optional<Tester> getTesterById(@PathVariable Long id) {
-        return testerService.getTesterById(id);
-    }
-
-    // Thymeleaf: Liste aller Tester anzeigen
     @GetMapping
     public String showTesterList(Model model) {
-        model.addAttribute("testers", testerService.getAllTesters());
-        return "testers";  // src/main/resources/templates/testers.html
+        List<Tester> testers = testerService.getAllTesters();
+        model.addAttribute("testers", testers);
+        return "testers";  // Template src/main/resources/templates/testers.html
     }
 
-    // Thymeleaf: Formular für neuen Tester
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("tester", new Tester());
-        return "tester_form"; // src/main/resources/templates/tester_form.html
+        return "tester_form";
     }
 
-    // Thymeleaf: Formular für Tester bearbeiten
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<Tester> tester = testerService.getTesterById(id);
@@ -63,10 +47,9 @@ public class TesterController {
         }
     }
 
-    // Thymeleaf: Tester speichern (neu und update)
     @PostMapping("/save")
-    public String saveTester(@Valid @ModelAttribute("tester") Tester tester, BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes) {
+    public String saveTester(@Valid @ModelAttribute("tester") Tester tester,
+                             BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "tester_form";
         }
@@ -75,7 +58,6 @@ public class TesterController {
         return "redirect:/testers";
     }
 
-    // Thymeleaf: Tester löschen
     @GetMapping("/delete/{id}")
     public String deleteTester(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Tester> tester = testerService.getTesterById(id);

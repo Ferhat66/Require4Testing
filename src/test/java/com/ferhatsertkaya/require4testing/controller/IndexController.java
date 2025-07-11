@@ -10,4 +10,10 @@ public class IndexController {
     public String index() {
         return "index"; // verweist auf src/main/resources/templates/index.html
     }
+
+    @GetMapping("/testers")
+    public String testersDirect() {
+        return "testers"; // direkt Thymeleaf-Template ohne Service-Logik
+    }
+
 }

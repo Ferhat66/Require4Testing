@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping({"/requirements", "/requirements/"})
+@RequestMapping("/requirements")
 public class RequirementController {
 
     private final RequirementService requirementService;
