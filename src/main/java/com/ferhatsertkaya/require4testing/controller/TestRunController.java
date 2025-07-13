@@ -40,14 +40,14 @@ public class TestRunController {
     @GetMapping
     public String showTestRunList(Model model) {
         model.addAttribute("testruns", testRunService.getAllTestRuns());
-        return "testruns"; // src/main/resources/templates/testruns.html
+        return "testruns";
     }
 
     // Thymeleaf: Formular für neuen TestRun
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("testrun", new TestRun());
-        return "testrun_form"; // src/main/resources/templates/testrun_form.html
+        return "testrun_form";
     }
 
     // Thymeleaf: Formular zum Bearbeiten
@@ -63,7 +63,7 @@ public class TestRunController {
         }
     }
 
-    // Thymeleaf: Speichern (neu und update)
+    // Thymeleaf: Speichern (neu oder update)
     @PostMapping("/save")
     public String saveTestRun(@Valid @ModelAttribute("testrun") TestRun testRun,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
