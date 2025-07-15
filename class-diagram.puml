@@ -1,0 +1,82 @@
+@startuml
+'-----------------
+' Entitäten
+'-----------------
+
+class Requirement {
+  Long id
+  String title
+  String description
+}
+
+class TestCase {
+  Long id
+  String title
+  String description
+}
+
+class TestRun {
+  Long id
+  LocalDateTime runDate
+  String status
+}
+
+class Tester {
+  Long id
+  String name
+  String email
+}
+
+class User {
+  Long id
+  String username
+  String password
+  String role
+}
+
+'-----------------
+' Beziehungen zwischen Entitäten
+'-----------------
+
+Requirement "1" --> "*" TestCase
+TestCase "*" --> "1" Requirement
+
+TestCase "1" --> "*" TestRun
+TestRun "*" --> "1" TestCase
+
+Tester "1" --> "*" TestRun
+TestRun "*" --> "1" Tester
+
+'-----------------
+' Services
+'-----------------
+
+class RequirementService
+class TestCaseService
+class TestRunService
+class TesterService
+class UserService
+
+RequirementService --> Requirement
+TestCaseService --> TestCase
+TestRunService --> TestRun
+TesterService --> Tester
+UserService --> User
+
+'-----------------
+' Controller
+'-----------------
+
+class RequirementController
+class TestCaseController
+class TestRunController
+class TesterController
+class UserController
+
+RequirementController --> RequirementService
+TestCaseController --> TestCaseService
+TestRunController --> TestRunService
+TesterController --> TesterService
+UserController --> UserService
+
+@enduml
