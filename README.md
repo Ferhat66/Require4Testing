@@ -41,7 +41,7 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 	- Projektstruktur erweitert und konsolidiert
 	- README mit aktuellem Projektfortschritt ergänzt
 
-## Aktueller Stand (07. - 09.07.2025)
+## Stand 07. - 09.07.2025
 	- JSR-303 Bean Validation in den Datenmodellen ergänzt (Pflichtfelder, Formatvalidierung)
 	- REST-Controller mit @Valid Annotation zur Aktivierung der Validierung versehen
 	- Globale Fehlerbehandlung via @ControllerAdvice implementiert, um Validierungsfehler als JSON zu senden
@@ -50,7 +50,7 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 	- Backend nun robust gegenüber fehlerhaften Eingaben
 
 
-## Aktueller Stand (10.07.2025)
+## Stand 10.07.2025
 	- Frontend mit Thymeleaf für Requirement, Tester, TestRun und User vollständig implementiert
 	- Controller für die Frontend-Seiten (Thymeleaf) für alle Kern-Entitäten erstellt
 	- Indexseite und IndexController für Navigation implementiert
@@ -58,9 +58,18 @@ Sie ermöglicht die Verwaltung von Anforderungen (Requirements), Testfällen (Te
 	- Problem mit Pfad-Weiterleitungen (/testers vs. /testers/) erkannt und dokumentiert
 	- Anwendung läuft stabil, aber Pfadproblematik beim Zugriff auf URLs ohne Slash bleibt offen
 
+# Aktueller Stand (11.07 - 15.07.2025)
+	- Alle Thymeleaf-Templates (Requirements, Tester, TestRun, User) final überarbeitet und optisch vereinheitlicht
+	- Einheitliches Button-Design und konsistente Navigation mit „Zurück zur Startseite“-Buttons umgesetzt
+	- Umfangreiche Validierungen und Fehlermeldungen im Frontend integriert (JSR-303 Bean Validation + Thymeleaf)
+	- Detaillierte Frontend-Dokumentation vorbereitet und mit Screenshots untermauert
+	- Vollständige Vorbereitung der Screenshots für die Dokumentation (Workflows: Anlegen, Bearbeiten, Übersichten)
+	- Code finalisiert und in Repository gepusht
+	- Anwendung läuft stabil, alle Kernfunktionen sind lauffähig und konsistent bedienbar
+
 ## Nächste Schritte 
-- Weitere Tests schreiben und automatisieren, insbesondere für neue Controller  
-- Dokumentation erweitern (Architektur, UML-Diagramme, Screenshots)  
-- Erweiterte Features implementieren, z.B. Zuordnung von Testfällen zu Testläufen und Pflege von Testergebnissen
+- Fokus auf Datenbankmodell und UML-Diagramm zur Ergänzung der Fallstudie 
+- Fertigstellung der finalen Dokumentation (inkl. Deployment-Abschnitt, Screenshots und Diagramme)  
+- Vorbereitung der endgültigen Abgabeversion der Fallstudie
 
 ---
