@@ -3,20 +3,85 @@
 <head>
     <title>Tester Übersicht</title>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 1rem;
+        }
+        .button-group {
+            margin-bottom: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007acc;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-right: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #005fa3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        thead {
+            background-color: #007acc;
+            color: white;
+        }
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .success-message {
+            color: green;
+            margin-bottom: 1rem;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 1rem;
+        }
+        a.action-link {
+            color: #007acc;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+        a.action-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
+
 <h1>Tester Übersicht</h1>
 
-<div th:if="${successMessage}" style="color:green;">
+<div th:if="${successMessage}" class="success-message">
     <p th:text="${successMessage}"></p>
 </div>
-<div th:if="${errorMessage}" style="color:red;">
+<div th:if="${errorMessage}" class="error-message">
     <p th:text="${errorMessage}"></p>
 </div>
 
-<a href="/testers/new">Neuen Tester anlegen</a>
+<div class="button-group">
+    <a th:href="@{/testers/new}" class="btn">Neuen Tester anlegen</a>
+    <a th:href="@{/}" class="btn">Zurück zur Startseite</a>
+</div>
 
-<table border="1" cellpadding="5" cellspacing="0">
+<table>
     <thead>
     <tr>
         <th>ID</th>
@@ -31,15 +96,14 @@
         <td th:text="${tester.name}">Max Mustermann</td>
         <td th:text="${tester.email}">max@example.com</td>
         <td>
-            <a th:href="@{'/testers/edit/' + ${tester.id}}">Bearbeiten</a> |
+            <a th:href="@{'/testers/edit/' + ${tester.id}}" class="action-link">Bearbeiten</a>
             <a th:href="@{'/testers/delete/' + ${tester.id}}"
+               class="action-link"
                onclick="return confirm('Tester wirklich löschen?');">Löschen</a>
         </td>
     </tr>
     </tbody>
 </table>
-
-<a href="/">Zurück zur Startseite</a>
 
 </body>
 </html>

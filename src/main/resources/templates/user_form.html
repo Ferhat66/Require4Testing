@@ -3,6 +3,51 @@
 <head>
     <title>Benutzer Formular</title>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 1rem;
+        }
+        form div {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007acc;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-right: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #005fa3;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+        }
+        .button-group {
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -10,33 +55,30 @@
 
 <form th:action="@{/users/save}" th:object="${user}" method="post">
 
+    <input type="hidden" th:field="*{id}" />
+
     <div>
         <label for="username">Benutzername:</label>
         <input type="text" id="username" th:field="*{username}" />
-        <div th:if="${#fields.hasErrors('username')}" style="color:red;">
-            <p th:errors="*{username}">Bitte geben Sie einen Benutzernamen ein</p>
-        </div>
+        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"></div>
     </div>
 
     <div>
         <label for="password">Passwort:</label>
         <input type="password" id="password" th:field="*{password}" />
-        <div th:if="${#fields.hasErrors('password')}" style="color:red;">
-            <p th:errors="*{password}">Bitte geben Sie ein Passwort ein</p>
-        </div>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></div>
     </div>
 
     <div>
         <label for="role">Rolle:</label>
         <input type="text" id="role" th:field="*{role}" />
-        <div th:if="${#fields.hasErrors('role')}" style="color:red;">
-            <p th:errors="*{role}">Bitte geben Sie eine Rolle an</p>
-        </div>
+        <div th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="error-message"></div>
     </div>
 
-    <div>
-        <button type="submit">Speichern</button>
-        <a href="/users">Abbrechen</a>
+    <div class="button-group">
+        <button type="submit" class="btn">Speichern</button>
+        <a th:href="@{/users}" class="btn">Abbrechen</a>
+        <a th:href="@{/}" class="btn">Zurück zur Startseite</a>
     </div>
 
 </form>

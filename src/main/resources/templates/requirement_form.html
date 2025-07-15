@@ -5,6 +5,51 @@
     <title th:text="${requirement.id == null} ? 'Neue Anforderung' : 'Anforderung bearbeiten'">Formular</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 1rem;
+        }
+        form div {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007acc;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-right: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #005fa3;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+        }
+        .button-group {
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
     <h1 th:text="${requirement.id == null} ? 'Neue Anforderung anlegen' : 'Anforderung bearbeiten'">Formular</h1>
@@ -15,18 +60,19 @@
         <div>
             <label for="title">Titel:</label>
             <input type="text" id="title" th:field="*{title}" />
-            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red"></div>
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
         </div>
 
         <div>
             <label for="description">Beschreibung:</label>
-            <textarea id="description" th:field="*{description}"></textarea>
-            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red"></div>
+            <textarea id="description" th:field="*{description}" rows="4"></textarea>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error-message"></div>
         </div>
 
-        <div>
-            <button type="submit">Speichern</button>
-            <a th:href="@{/requirements}">Abbrechen</a>
+        <div class="button-group">
+            <button type="submit" class="btn">Speichern</button>
+            <a th:href="@{/requirements}" class="btn">Abbrechen</a>
+            <a th:href="@{/}" class="btn">Zurück zur Startseite</a>
         </div>
     </form>
 </body>

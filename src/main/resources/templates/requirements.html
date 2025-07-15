@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Benutzer Übersicht</title>
+    <title>Anforderungen</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <style>
@@ -47,14 +47,6 @@
         tbody tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .success-message {
-            color: green;
-            margin-bottom: 1rem;
-        }
-        .error-message {
-            color: red;
-            margin-bottom: 1rem;
-        }
         a.action-link {
             color: #007acc;
             text-decoration: none;
@@ -66,44 +58,35 @@
     </style>
 </head>
 <body>
+    <h1>Anforderungen</h1>
 
-<h1>Benutzer Übersicht</h1>
+    <div class="button-group">
+        <a th:href="@{/requirements/new}" class="btn">Neue Anforderung erstellen</a>
+        <a th:href="@{/}" class="btn">Zurück zur Startseite</a>
+    </div>
 
-<div th:if="${successMessage}" class="success-message">
-    <p th:text="${successMessage}"></p>
-</div>
-<div th:if="${errorMessage}" class="error-message">
-    <p th:text="${errorMessage}"></p>
-</div>
-
-<div class="button-group">
-    <a th:href="@{/users/new}" class="btn">Neuen Benutzer anlegen</a>
-    <a th:href="@{/}" class="btn">Zurück zur Startseite</a>
-</div>
-
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Benutzername</th>
-        <th>Rolle</th>
-        <th>Aktionen</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}">1</td>
-        <td th:text="${user.username}">testuser</td>
-        <td th:text="${user.role}">USER</td>
-        <td>
-            <a th:href="@{'/users/edit/' + ${user.id}}" class="action-link">Bearbeiten</a>
-            <a th:href="@{'/users/delete/' + ${user.id}}"
-               class="action-link"
-               onclick="return confirm('Benutzer wirklich löschen?');">Löschen</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titel</th>
+                <th>Beschreibung</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="req : ${requirements}">
+                <td th:text="${req.id}">1</td>
+                <td th:text="${req.title}">Titel</td>
+                <td th:text="${req.description}">Beschreibung</td>
+                <td>
+                    <a th:href="@{'/requirements/edit/' + ${req.id}}" class="action-link">Bearbeiten</a>
+                    <a th:href="@{'/requirements/delete/' + ${req.id}}"
+                       class="action-link"
+                       onclick="return confirm('Wirklich löschen?');">Löschen</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

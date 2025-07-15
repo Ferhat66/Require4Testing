@@ -3,6 +3,51 @@
 <head>
     <title>Tester Formular</title>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 1rem;
+        }
+        form div {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007acc;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-right: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #005fa3;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+        }
+        .button-group {
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -10,25 +55,24 @@
 
 <form th:action="@{/testers/save}" th:object="${tester}" method="post">
 
+    <input type="hidden" th:field="*{id}" />
+
     <div>
         <label for="name">Name:</label>
         <input type="text" id="name" th:field="*{name}" />
-        <div th:if="${#fields.hasErrors('name')}" style="color:red;">
-            <p th:errors="*{name}">Name Fehler</p>
-        </div>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></div>
     </div>
 
     <div>
         <label for="email">Email:</label>
         <input type="email" id="email" th:field="*{email}" />
-        <div th:if="${#fields.hasErrors('email')}" style="color:red;">
-            <p th:errors="*{email}">Email Fehler</p>
-        </div>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></div>
     </div>
 
-    <div>
-        <button type="submit">Speichern</button>
-        <a href="/testers">Abbrechen</a>
+    <div class="button-group">
+        <button type="submit" class="btn">Speichern</button>
+        <a th:href="@{/testers}" class="btn">Abbrechen</a>
+        <a th:href="@{/}" class="btn">Zurück zur Startseite</a>
     </div>
 
 </form>
