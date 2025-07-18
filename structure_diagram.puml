@@ -1,0 +1,242 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+title Strukturdiagramm – Require4Testing
+left to right direction
+
+package "Controller" {
+
+  class RequirementController {
+    +getAllRequirements()
+    +getRequirementById(id)
+    +showCreateForm()
+    +showEditForm(id)
+    +saveRequirement(requirement)
+    +deleteRequirement(id)
+  }
+  RequirementController --> RequirementService
+
+  class TesterController {
+    +showTesterList()
+    +showCreateForm()
+    +showEditForm(id)
+    +saveTester(tester)
+    +deleteTester(id)
+  }
+  TesterController --> TesterService
+
+  class TesterRestController {
+    +getAllTesters()
+    +getTesterById(id)
+    +createTester(tester)
+    +updateTester(id, tester)
+    +deleteTester(id)
+  }
+  TesterRestController --> TesterService
+
+  class TestRunController {
+    +getAllTestRuns()
+    +getTestRunById(id)
+    +showTestRunList()
+    +showCreateForm()
+    +showEditForm(id)
+    +saveTestRun(testRun)
+    +deleteTestRun(id)
+  }
+  TestRunController --> TestRunService
+
+  class TestRunRestController {
+    +getAllTestRuns()
+    +getTestRunById(id)
+    +createTestRun(testRun)
+    +updateTestRun(id, testRun)
+    +deleteTestRun(id)
+  }
+  TestRunRestController --> TestRunService
+
+  class UserController {
+    +getAllUsers()
+    +getUserById(id)
+    +showUserList()
+    +showCreateForm()
+    +showEditForm(id)
+    +saveUser(user)
+    +deleteUser(id)
+  }
+  UserController --> UserService
+
+  class UserRestController {
+    +getAllUsers()
+    +getUserById(id)
+    +createUser(user)
+    +updateUser(id, user)
+    +deleteUser(id)
+  }
+  UserRestController --> UserService
+}
+
+package "Service" {
+
+  interface RequirementService {
+    +saveRequirement()
+    +getAllRequirements()
+    +getRequirementById()
+    +deleteRequirement()
+  }
+
+  class RequirementServiceImpl {
+    +saveRequirement()
+    +getAllRequirements()
+    +getRequirementById()
+    +deleteRequirement()
+  }
+  RequirementServiceImpl -up-|> RequirementService
+  RequirementServiceImpl --> RequirementRepository
+
+  interface TestCaseService {
+    +saveTestCase()
+    +getAllTestCases()
+    +getTestCaseById()
+    +deleteTestCase()
+  }
+
+  class TestCaseServiceImpl {
+    +saveTestCase()
+    +getAllTestCases()
+    +getTestCaseById()
+    +deleteTestCase()
+  }
+  TestCaseServiceImpl -up-|> TestCaseService
+  TestCaseServiceImpl --> TestCaseRepository
+
+  interface TesterService {
+    +saveTester()
+    +getAllTesters()
+    +getTesterById()
+    +deleteTester()
+  }
+
+  class TesterServiceImpl {
+    +saveTester()
+    +getAllTesters()
+    +getTesterById()
+    +deleteTester()
+  }
+  TesterServiceImpl -up-|> TesterService
+  TesterServiceImpl --> TesterRepository
+
+  interface TestRunService {
+    +saveTestRun()
+    +getAllTestRuns()
+    +getTestRunById()
+    +deleteTestRun()
+  }
+
+  class TestRunServiceImpl {
+    +saveTestRun()
+    +getAllTestRuns()
+    +getTestRunById()
+    +deleteTestRun()
+  }
+  TestRunServiceImpl -up-|> TestRunService
+  TestRunServiceImpl --> TestRunRepository
+
+  interface UserService {
+    +saveUser()
+    +getAllUsers()
+    +getUserById()
+    +deleteUser()
+  }
+
+  class UserServiceImpl {
+    +saveUser()
+    +getAllUsers()
+    +getUserById()
+    +deleteUser()
+  }
+  UserServiceImpl -up-|> UserService
+  UserServiceImpl --> UserRepository
+}
+
+package "Repository" {
+
+  interface RequirementRepository {
+    +save()
+    +findById()
+    +findAll()
+    +deleteById()
+  }
+
+  interface TestCaseRepository {
+    +save()
+    +findById()
+    +findAll()
+    +deleteById()
+  }
+
+  interface TesterRepository {
+    +save()
+    +findById()
+    +findAll()
+    +deleteById()
+  }
+
+  interface TestRunRepository {
+    +save()
+    +findById()
+    +findAll()
+    +deleteById()
+  }
+
+  interface UserRepository {
+    +save()
+    +findById()
+    +findAll()
+    +deleteById()
+  }
+}
+
+package "Model" {
+
+  class Requirement {
+    +Long id
+    +String title
+    +String description
+    +List<TestCase> testCases
+  }
+
+  class TestCase {
+    +Long id
+    +String title
+    +String description
+    +Requirement requirement
+  }
+
+  class Tester {
+    +Long id
+    +String name
+    +String email
+    +List<TestRun> testRuns
+  }
+
+  class TestRun {
+    +Long id
+    +LocalDateTime runDate
+    +String status
+    +TestCase testCase
+    +Tester tester
+  }
+
+  class User {
+    +Long id
+    +String username
+    +String password
+    +String role
+  }
+
+  Requirement "1" --> "*" TestCase
+  TestRun "*" --> "1" TestCase
+  TestRun "*" --> "1" Tester
+}
+
+@enduml
